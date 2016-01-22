@@ -33,8 +33,17 @@ module Porro
     def attribute(attributes)
       attributes.each do |name, type|
         coder = Porro::Coders.factory(type)
+        porro_attributes << name.to_sym
         generate_porro_instance_accessors_for(name.to_sym, coder)
       end
+    end
+
+    def porro_attributes
+      @porro_attributes ||= Set.new
+    end
+
+    def inherited(base)
+      base.instance_variable_set(:'@porro_attributes', @porro_attributes.dup)
     end
 
     private
