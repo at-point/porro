@@ -12,7 +12,7 @@ module Porro
         value = value.to_s
         values.find { |v| v.to_s == value } || default_value
       end
-      alias_method :load, :dump
+      alias_method :dump, :load
     end
   end
 end
