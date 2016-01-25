@@ -5,4 +5,14 @@ set -vx
 
 bundle install
 
+set +vx
 # Do any other automated setup that you need to do here
+echo ""
+echo " 'porro' is ready for dev_________"
+echo "                _____|            |_____"
+echo "               '======================='"
+echo "                     (|__0_><_0__|)"
+echo "                      |     _\   |"
+echo "                       \   ~~~  /"
+echo "                        '---^--'"
+echo ""

@@ -1,15 +1,14 @@
-# Porro - The Diego de la Vega for POROs
+# Porro - The _Diego de la Vega_ for POROs
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nomodel`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Tries to find a clean approach to form objects, this gem has been made for this
+exact use case: massaging values from a form into a ruby object.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'nomodel'
+gem 'porro'
 ```
 
 And then execute:
@@ -18,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install nomodel
+    $ gem install porro
 
 ## Usage
 
