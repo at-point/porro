@@ -4,8 +4,8 @@ require 'support/shared_type'
 require 'porro/types'
 
 class TypesSpecType
-  def self.load(arg); "LOAD" end
-  def self.dump(arg); "DUMP" end
+  def self.load(arg); 'LOAD' end
+  def self.dump(arg); 'DUMP' end
 end
 
 RSpec.describe Porro::Types do
@@ -22,6 +22,18 @@ RSpec.describe Porro::Types do
 
     it 'returns None for anything else' do
       expect(subject.factory('hello')).to eq Porro::Types::None
+    end
+
+    it 'returns a Blankified.new(Bool) for :bool' do
+      type = subject.factory(:bool)
+      expect(type).to be_a Porro::Types::Blankified
+      expect(type.wrapped).to eq Porro::Types::Bool
+    end
+
+    it 'returns a Blankified.new(String) for :string' do
+      type = subject.factory(:string)
+      expect(type).to be_a Porro::Types::Blankified
+      expect(type.wrapped).to eq Porro::Types::String
     end
   end
 end
