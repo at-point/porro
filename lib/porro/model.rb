@@ -38,6 +38,17 @@ module Porro
       base.class_eval { extend ClassMethods }
     end
 
+    def initialize(params = {})
+      self.attributes = params
+      super()
+    end
+
+    def attributes=(params = {})
+      params.each do |attr, value|
+        self.public_send("#{attr}=", value)
+      end if params
+    end
+
     def attributes
       Hash[self.class.porro_attributes.map { |attr| [attr, send(attr)] }]
     end

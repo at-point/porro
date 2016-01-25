@@ -1,4 +1,3 @@
 require 'porro/version'
-
-module Porro
-end
+require 'porro/types'
+require 'porro/model'
