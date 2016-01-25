@@ -1,64 +1,45 @@
+require 'porro/types'
+
 module Porro
-  module Coders
-    def self.factory(type)
-      return StringCoder if [:str, :string].include?(type)
-      return BooleanCoder if [:bool, :boolean].include?(type)
-      return type if type.respond_to?(:load)
-      NoneCoder
-    end
-
-    module AnyCoder
-      def self.load(value); value end
-    end
-
-    module BooleanCoder
-      def self.load(value)
-        return false if %w{no false 0}.include?(value.to_s.downcase)
-        !!value
-      end
-    end
-
-    module StringCoder
-      def self.load(str)
-        str ? str.to_s : nil
-      end
-    end
-
-    module NoneCoder
-      def self.load(_); nil end
-    end
-  end
-
   module Model
-    def attribute(attributes)
-      attributes.each do |name, type|
-        coder = Porro::Coders.factory(type)
+    module ClassMethods
+      def attribute(name, type)
+        type = Porro::Types.factory(type)
         porro_attributes << name.to_sym
-        generate_porro_instance_accessors_for(name.to_sym, coder)
+        generate_porro_instance_accessors_for(name.to_sym, type)
+      end
+
+      def porro_attributes
+        @porro_attributes ||= Set.new
+      end
+
+      def inherited(base)
+        inherited_attrs = @porro_attributes ? @porro_attributes.dup : Set.new
+        base.instance_variable_set(:'@porro_attributes', inherited_attrs)
+      end
+
+      private
+
+      def porro_module
+        @porro_module ||= Module.new.tap { |mod| include mod }
+      end
+
+      def generate_porro_instance_accessors_for(name, type)
+        ivar = :"@#{name}"
+        porro_module.module_eval do
+          define_method("#{name}")  { instance_variable_get(ivar) }
+          define_method("#{name}=") { |value| instance_variable_set(ivar, type.load(value)) }
+          define_method("#{name}?") { send(name) }
+        end
       end
     end
 
-    def porro_attributes
-      @porro_attributes ||= Set.new
+    def self.included(base)
+      base.class_eval { extend ClassMethods }
     end
 
-    def inherited(base)
-      base.instance_variable_set(:'@porro_attributes', @porro_attributes.dup)
-    end
-
-    private
-
-    def porro_module
-      @porro_module ||= Module.new.tap { |mod| include mod }
-    end
-
-    def generate_porro_instance_accessors_for(name, coder)
-      ivar = :"@#{name}"
-      porro_module.module_eval do
-        define_method("#{name}")  { instance_variable_get(ivar) }
-        define_method("#{name}=") { |value| instance_variable_set(ivar, coder.load(value)) }
-        define_method("#{name}?") { send(name) }
-      end
+    def attributes
+      Hash[self.class.porro_attributes.map { |attr| [attr, send(attr)] }]
     end
   end
 end

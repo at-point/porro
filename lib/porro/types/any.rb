@@ -10,8 +10,8 @@ module Porro
         value
       end
 
-      def dump(value)
-        value
+      def dump(attribute)
+        attribute
       end
     end
   end

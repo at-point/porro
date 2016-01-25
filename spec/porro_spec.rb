@@ -8,37 +8,21 @@ class MultiplyCoder < Struct.new(:factor)
 end
 
 class SomeObject
-  extend Porro::Model
+  include Porro::Model
 
-  attribute name: :string,
-            loves_chocolate: :bool,
-            strength: MultiplyCoder.new(5)
+  attribute :name, :string
+  attribute :loves_chocolate, :bool
+  attribute :strength, MultiplyCoder.new(5)
 end
 
 class UberObject < SomeObject
-  attribute strength: MultiplyCoder.new(10),
-            magic: :bool
+  attribute :strength, MultiplyCoder.new(10)
+  attribute :magic, :bool
 end
 
 RSpec.describe Porro do
   it 'has a version number' do
     expect(Porro::VERSION).not_to be nil
-  end
-
-  context '::Coders' do
-    context '.factory' do
-      it 'returns a StringCoder for :string' do
-        expect(Porro::Coders.factory(:string)).to eq Porro::Coders::StringCoder
-      end
-
-      it 'returns a BooleanCoder for :bool' do
-        expect(Porro::Coders.factory(:bool)).to eq Porro::Coders::BooleanCoder
-      end
-
-      it 'returns an AnyType for itself' do
-        expect(Porro::Coders.factory(Porro::Coders::AnyCoder)).to eq Porro::Coders::AnyCoder
-      end
-    end
   end
 
   context '::Model' do
