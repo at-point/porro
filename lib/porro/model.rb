@@ -27,7 +27,7 @@ module Porro
       def generate_porro_instance_accessors_for(name, type)
         ivar = :"@#{name}"
         porro_module.module_eval do
-          define_method("#{name}")  { instance_variable_get(ivar) }
+          define_method("#{name}")  { instance_variable_get(ivar) if instance_variable_defined?(ivar) }
           define_method("#{name}=") { |value| instance_variable_set(ivar, type.load(value)) }
           define_method("#{name}?") { send(name) }
         end
