@@ -35,5 +35,11 @@ RSpec.describe Porro::Types do
       expect(type).to be_a Porro::Types::Blankified
       expect(type.wrapped).to eq Porro::Types::String
     end
+
+    it 'returns a Blankified.new(Date) for :date' do
+      type = subject.factory(:date)
+      expect(type).to be_a Porro::Types::Blankified
+      expect(type.wrapped).to be_a Porro::Types::Date
+    end
   end
 end
