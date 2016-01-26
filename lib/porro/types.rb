@@ -14,9 +14,9 @@ module Porro
 
     def factory(type)
       return type if %w{load dump}.all? { |method| type.respond_to?(method) }
-      return Blankified.new(Bool) if type == :bool
-      return Blankified.new(String) if type == :string
-      return Blankified.new(Date) if type == :date
+      return Blankified.new(Porro::Types::Bool) if type == :bool
+      return Blankified.new(Porro::Types::String) if type == :string
+      return Blankified.new(Porro::Types::Date.new) if type == :date
       return Enum.new(type) if type.is_a?(Array)
       None
     end
