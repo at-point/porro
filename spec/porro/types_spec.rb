@@ -41,5 +41,11 @@ RSpec.describe Porro::Types do
       expect(type).to be_a Porro::Types::Blankified
       expect(type.wrapped).to be_a Porro::Types::Date
     end
+
+    it 'returns a Blankified.new(Numeric) for :integer' do
+      type = subject.factory(:integer)
+      expect(type).to be_a Porro::Types::Blankified
+      expect(type.wrapped).to be Porro::Types::Numeric
+    end
   end
 end
