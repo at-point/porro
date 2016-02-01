@@ -31,7 +31,7 @@ RSpec.describe Porro do
     subject { SomeObject.new }
 
     it 'has attributes' do
-      expect(SomeObject.porro_attributes).to eq Set.new([:name, :loves_chocolate, :strength])
+      expect(SomeObject.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength]
     end
 
     it 'creates accessors' do
@@ -49,8 +49,8 @@ RSpec.describe Porro do
     subject { UberObject.new }
 
     it 'has more attributes' do
-      expect(UberObject.porro_attributes).to eq Set.new([:name, :loves_chocolate, :strength, :magic])
-      expect(SomeObject.porro_attributes).to eq Set.new([:name, :loves_chocolate, :strength])
+      expect(UberObject.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength, :magic]
+      expect(SomeObject.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength]
     end
 
     it 'creates accessors' do

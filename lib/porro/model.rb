@@ -5,16 +5,16 @@ module Porro
     module ClassMethods
       def attribute(name, type)
         type = Porro::Types.factory(type)
-        porro_attributes << name.to_sym
+        porro_attributes[name.to_sym] = type
         generate_porro_instance_accessors_for(name.to_sym, type)
       end
 
       def porro_attributes
-        @porro_attributes ||= Set.new
+        @porro_attributes ||= Hash.new
       end
 
       def inherited(base)
-        inherited_attrs = @porro_attributes ? @porro_attributes.dup : Set.new
+        inherited_attrs = @porro_attributes ? @porro_attributes.dup : Hash.new
         base.instance_variable_set(:'@porro_attributes', inherited_attrs)
       end
 
@@ -51,6 +51,14 @@ module Porro
 
     def attributes
       Hash[self.class.porro_attributes.map { |attr| [attr, send(attr)] }]
+    end
+
+    private
+
+    def read_porro_attribute(name)
+    end
+
+    def write_porro_attribute(name, value)
     end
   end
 end
