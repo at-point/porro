@@ -1,12 +1,14 @@
 require 'porro/types'
+require 'porro/types/none'
 
 module Porro
   module Model
     module ClassMethods
       def attribute(name, type)
+        name = name.to_sym
         type = Porro::Types.factory(type)
-        porro_attributes[name.to_sym] = type
-        generate_porro_instance_accessors_for(name.to_sym, type)
+        porro_attributes[name] = type
+        generate_porro_instance_accessors_for(name, type)
       end
 
       def porro_attributes
@@ -25,10 +27,9 @@ module Porro
       end
 
       def generate_porro_instance_accessors_for(name, type)
-        ivar = :"@#{name}"
         porro_module.module_eval do
-          define_method("#{name}")  { instance_variable_get(ivar) if instance_variable_defined?(ivar) }
-          define_method("#{name}=") { |value| instance_variable_set(ivar, type.load(value)) }
+          define_method("#{name}")  { read_porro_attribute_raw(name) }
+          define_method("#{name}=") { |value| write_porro_attribute(name, value) }
           define_method("#{name}?") { send(name) }
         end
       end
@@ -50,15 +51,25 @@ module Porro
     end
 
     def attributes
-      Hash[self.class.porro_attributes.map { |attr| [attr, send(attr)] }]
+      Hash[self.class.porro_attributes.map { |attr, type| [attr, read_porro_attribute(attr)] }]
     end
 
     private
 
+    def read_porro_attribute_raw(name)
+      ivar = :"@#{name}"
+      instance_variable_get(ivar) if instance_variable_defined?(ivar)
+    end
+
     def read_porro_attribute(name)
+      type = self.class.porro_attributes.fetch(name, Porro::Types::None)
+      type.dump(read_porro_attribute_raw(name))
     end
 
     def write_porro_attribute(name, value)
+      ivar = :"@#{name}"
+      type = self.class.porro_attributes.fetch(name, Porro::Types::None)
+      instance_variable_set(ivar, type.load(value))
     end
   end
 end
