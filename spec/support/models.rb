@@ -5,7 +5,9 @@ class MultiplyCoder < Struct.new(:factor)
     value.to_i * factor
   end
 
-  def dump(attribute); attribute end
+  def dump(attribute)
+    attribute / factor
+  end
 end
 
 class Address

@@ -30,6 +30,20 @@ RSpec.describe Porro::Model do
     end
   end
 
+  context '#attributes' do
+    subject { Person.new(name: 'Zorro', strength: 3, address: { street: 'Bahnhofstrasse 1' } ) }
+
+    it 'returns a Hash with all keys, including embedded objects' do
+      hash = {
+        name: 'Zorro',
+        loves_chocolate: nil,
+        strength: 3,
+        address: { street: 'Bahnhofstrasse 1', zip: nil, city: nil }
+      }
+      expect(subject.attributes).to eq hash
+    end
+  end
+
   context 'inheritance' do
     subject { Magican.new }
 
