@@ -7,6 +7,7 @@ require 'porro/types/none'
 
 require 'porro/types/enum'
 require 'porro/types/blankified'
+require 'porro/types/embed'
 
 module Porro
   module Types

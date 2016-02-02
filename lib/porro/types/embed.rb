@@ -11,6 +11,7 @@ module Porro
       end
 
       def load(attributes)
+        return attributes if attributes.is_a?(klass)
         klass.new(attributes)
       end
 

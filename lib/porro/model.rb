@@ -11,6 +11,10 @@ module Porro
         generate_porro_instance_accessors_for(name, type)
       end
 
+      def embeds_one(name, type)
+        attribute name, Porro::Types::Embed.new(type)
+      end
+
       def porro_attributes
         @porro_attributes ||= Hash.new
       end
@@ -47,7 +51,7 @@ module Porro
     def attributes=(params = {})
       params.each do |attr, value|
         self.public_send("#{attr}=", value)
-      end if params
+      end if params.respond_to?(:each)
     end
 
     def attributes
