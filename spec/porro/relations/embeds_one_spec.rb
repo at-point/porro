@@ -2,9 +2,9 @@ require 'spec_helper'
 require 'support/shared_type'
 require 'support/models'
 
-require 'porro/types/embed'
+require 'porro/relations/embeds_one'
 
-RSpec.describe Porro::Types::Embed do
+RSpec.describe Porro::Relations::EmbedsOne do
   subject { described_class.new(Address) }
 
   context 'compliance' do

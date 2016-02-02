@@ -1,6 +1,8 @@
 require 'porro/types'
 require 'porro/types/none'
 
+require 'porro/relations'
+
 module Porro
   module Model
     module ClassMethods
@@ -12,7 +14,10 @@ module Porro
       end
 
       def embeds_one(name, type)
-        attribute name, Porro::Types::Embed.new(type)
+        name = name.to_sym
+        relation = Porro::Relations.factory(:one, type)
+        porro_attributes[name] = relation
+        generate_porro_instance_accessors_for(name, relation)
       end
 
       def porro_attributes
