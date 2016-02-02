@@ -18,6 +18,16 @@ class Address
   attribute :city, :string
 end
 
+class Email
+  include Porro::Model
+  attribute :email, :string
+
+  def ==(other)
+    return email == other.email if other.respond_to?(:email)
+    super
+  end
+end
+
 class Person
   include Porro::Model
 
@@ -26,6 +36,7 @@ class Person
   attribute :strength, MultiplyCoder.new(5)
 
   embeds_one :address, Address
+  embeds_many :emails, Email
 end
 
 class Magican < Person

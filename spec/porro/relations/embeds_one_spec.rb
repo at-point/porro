@@ -31,7 +31,7 @@ RSpec.describe Porro::Relations::EmbedsOne do
   end
 
   context '#dump' do
-    it 'TBD: should maybe warn or fail when invalid type is passed, e.g. not an EmbedFake instance?'
+    it 'TBD: should maybe warn or fail when invalid type is passed, e.g. not an Address instance?'
 
     it 'dumps if it responds to #attributes' do
       expect(subject.dump(double(attributes: 'attributes'))).to eq 'attributes'

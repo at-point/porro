@@ -11,7 +11,7 @@ RSpec.describe Porro::Model do
     end
 
     it 'has all attributes as Symbolized keys' do
-      expect(Person.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength, :address]
+      expect(Person.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength, :address, :emails]
     end
   end
 
@@ -38,7 +38,8 @@ RSpec.describe Porro::Model do
         name: 'Zorro',
         loves_chocolate: nil,
         strength: 3,
-        address: { street: 'Bahnhofstrasse 1', zip: nil, city: nil }
+        address: { street: 'Bahnhofstrasse 1', zip: nil, city: nil },
+        emails: []
       }
       expect(subject.attributes).to eq hash
     end
@@ -47,9 +48,12 @@ RSpec.describe Porro::Model do
   context 'inheritance' do
     subject { Magican.new }
 
-    it 'has more attributes' do
-      expect(Magican.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength, :address, :magic]
-      expect(Person.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength, :address]
+    it 'adds attribute :magic to Magican' do
+      expect(Magican.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength, :address, :emails, :magic]
+    end
+
+    it 'does not add :magic to parent class (Person)' do
+      expect(Person.porro_attributes.keys).to eq [:name, :loves_chocolate, :strength, :address, :emails]
     end
 
     it 'creates additional accessors' do

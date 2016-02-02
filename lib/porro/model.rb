@@ -20,6 +20,13 @@ module Porro
         generate_porro_instance_accessors_for(name, relation)
       end
 
+      def embeds_many(name, type)
+        name = name.to_sym
+        relation = Porro::Relations.factory(:many, type)
+        porro_attributes[name] = relation
+        generate_porro_instance_accessors_for(name, relation)
+      end
+
       def porro_attributes
         @porro_attributes ||= Hash.new
       end
