@@ -1,8 +1,7 @@
 require 'spec_helper'
 require 'support/shared_type'
 
-require 'porro/types/any'
-require 'porro/types/blankified'
+require 'porro/types'
 
 RSpec.describe Porro::Types::Blankified do
   subject { described_class.new(Porro::Types::Any) }

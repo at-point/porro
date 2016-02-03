@@ -26,7 +26,7 @@ module Porro
       end
 
       def initialize(type, collection_klass = Array)
-        fail ArgumentError, 'type must implement #load/#dump' unless Types.implements_interface?(type)
+        Types.implements_interface!(type)
         fail ArgumentError, 'collection_klass must implement .new' unless collection_klass.respond_to?(:new)
 
         @type = type

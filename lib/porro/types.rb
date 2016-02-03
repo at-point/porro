@@ -37,6 +37,10 @@ module Porro
       %w{load dump}.all? { |method| type.respond_to?(method) }
     end
 
+    def implements_interface!(type)
+      fail ArgumentError, 'type must implement #load/#dump' unless implements_interface?(type)
+    end
+
     def enum_type?(type)
       type.is_a?(Array)
     end
