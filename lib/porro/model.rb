@@ -14,11 +14,11 @@ module Porro
       end
 
       def embeds_one(name, klass)
-        attribute name, Porro::Relations::EmbedsOne.factory(klass)
+        attribute name, Porro::Relations::EmbedsOne.new(klass)
       end
 
       def embeds_many(name, type, as: :array)
-        attribute name, Porro::Relations::EmbedsMany.factory(type, as: as)
+        attribute name, Porro::Relations::EmbedsMany.factory(type, as)
       end
 
       def porro_attributes

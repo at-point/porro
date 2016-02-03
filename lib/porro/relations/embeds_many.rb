@@ -9,7 +9,26 @@ module Porro
     class EmbedsMany
       attr_reader :type, :collection_klass
 
+      def self.factory(type, collection = Array)
+        new wrap_type(type), wrap_collection(collection)
+      end
+
+      def self.wrap_type(type)
+        return Types.factory(type) if Types.supports?(type)
+        EmbedsOne.new(type)
+      end
+
+      def self.wrap_collection(klass)
+        return klass if klass.respond_to?(:new)
+        return Array if klass == :array
+        return Set if klass == :set
+        fail ArgumentError, 'invalid collection class, only :array, :set allowed'
+      end
+
       def initialize(type, collection_klass = Array)
+        fail ArgumentError, 'type must implement #load/#dump' unless Types.implements_interface?(type)
+        fail ArgumentError, 'collection_klass must implement .new' unless collection_klass.respond_to?(:new)
+
         @type = type
         @collection_klass = collection_klass
       end

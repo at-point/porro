@@ -22,14 +22,14 @@ module Porro
     module_function
 
     def factory(type)
-      fail ArgumentError, "type must be #{TYPES.keys.join(', ')} or implement #dump/#load" unless supported?(type)
+      fail ArgumentError, "type must be #{TYPES.keys.join(', ')} or implement #dump/#load" unless supports?(type)
 
       return type if implements_interface?(type)
       return Enum.new(type) if enum_type?(type)
       Blankified.new(TYPES[type])
     end
 
-    def supported?(type)
+    def supports?(type)
       implements_interface?(type) || enum_type?(type) || TYPES.key?(type)
     end
 

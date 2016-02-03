@@ -1,11 +1,12 @@
 require 'spec_helper'
 require 'support/shared_type'
+require 'support/type_matchers'
 require 'support/models'
 
 require 'porro/relations/embeds_many'
 
 RSpec.describe Porro::Relations::EmbedsMany do
-  subject { described_class.new(Email) }
+  subject { described_class.factory(Email) }
   it_behaves_like 'a Type'
 
   let(:personal) { Email.new(email: 'private@example.com') }
@@ -22,7 +23,17 @@ RSpec.describe Porro::Relations::EmbedsMany do
       expect { subject.factory('String') }.to raise_error ArgumentError
     end
 
+    it 'returns a blankified for :string' do
+      rel = subject.factory(:string)
+      expect(rel).to be_an_embeds_many_as(Array)
+      expect(rel.type).to be_a_blankified_with(Porro::Types::String)
+    end
 
+    it 'returns an EmbedsOne for Email' do
+      rel = subject.factory(Email)
+      expect(rel).to be_an_embeds_many_as(Array)
+      expect(rel.type).to be_an_embeds_one_with(Email)
+    end
   end
 
   context '#load' do
@@ -40,7 +51,7 @@ RSpec.describe Porro::Relations::EmbedsMany do
     end
 
     context 'with a Set' do
-      subject { described_class.new(String, Set) }
+      subject { described_class.factory(:string, Set) }
 
       it 'returns an empty Set' do
         expect(subject.load(nil)).to be_a Set
@@ -73,7 +84,7 @@ RSpec.describe Porro::Relations::EmbedsMany do
     end
 
     it 'produces a warning and returns empty hash if none of these methods are implemented' do
-      expect(subject.embedder).to receive(:warn).with(/unable to dump object of type Email/)
+      expect(subject.type).to receive(:warn).with(/unable to dump object of type Email/)
       expect(subject.dump([double()])).to eq [Hash.new]
     end
   end

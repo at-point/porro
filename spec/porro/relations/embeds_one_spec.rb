@@ -13,19 +13,19 @@ RSpec.describe Porro::Relations::EmbedsOne do
     it_behaves_like 'a Type'
   end
 
-  context '.factory' do
+  context '#initialize' do
     subject { described_class }
 
     it 'raises ArgumentError when type is nil' do
-      expect { subject.factory(nil) }.to raise_error(ArgumentError)
+      expect { subject.new(nil) }.to raise_error(ArgumentError)
     end
 
     it 'raises ArgumentError when type does not implement #new' do
-      expect { subject.factory('String') }.to raise_error(ArgumentError)
+      expect { subject.new('String') }.to raise_error(ArgumentError)
     end
 
     it 'returns EmbedsOne instance with class embedded' do
-      expect(subject.factory(::String)).to be_an_embeds_one_with(::String)
+      expect(subject.new(::String)).to be_an_embeds_one_with(::String)
     end
   end
 

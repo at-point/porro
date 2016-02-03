@@ -36,7 +36,14 @@ class Person
   attribute :strength, MultiplyType.new(5)
 
   embeds_one :address, Address
-  #embeds_many :emails, Email
+  embeds_many :emails, Email
+
+  #attribute :address, embed: Address
+  #attribute :address, embed: Address, type: :array
+
+  #attribute :address, many: Address
+  #attribute :emails, array: Email
+  #attribute :emails, set: Email
 end
 
 class Magican < Person

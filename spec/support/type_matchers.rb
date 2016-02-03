@@ -1,6 +1,3 @@
-require 'porro/types/blankified'
-require 'porro/relations/embeds_one'
-
 # For Porro::Types::Blankified
 RSpec::Matchers.define :be_a_blankified_with do |expected|
   match do |actual|
@@ -14,5 +11,13 @@ RSpec::Matchers.define :be_an_embeds_one_with do |expected|
   match do |actual|
     actual.is_a?(Porro::Relations::EmbedsOne) &&
       actual.klass == expected
+  end
+end
+
+# For Porro::Relations::EmbedsMany
+RSpec::Matchers.define :be_an_embeds_many_as do |expected|
+  match do |actual|
+    actual.is_a?(Porro::Relations::EmbedsMany) &&
+      actual.collection_klass == expected
   end
 end

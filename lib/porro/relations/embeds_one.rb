@@ -8,19 +8,8 @@ module Porro
     class EmbedsOne
       attr_reader :klass
 
-      def self.factory(klass)
-        fail ArgumentError, 'klass must be a Class or implement #load/#dump' unless supported?(klass)
-
-        return klass if Porro::Types.implements_interface?(klass)
-        new(klass)
-      end
-
-      def self.supported?(klass)
-        Porro::Types.implements_interface?(klass) ||
-          klass.respond_to?(:new)
-      end
-
       def initialize(klass)
+        fail ArgumentError, 'klass must implement #new' unless klass.respond_to?(:new)
         @klass = klass
       end
 
