@@ -1,11 +1,9 @@
-require 'porro/types'
-
 module Porro
-  module Relations
+  module Embeds
 
     # Embedded / nested objects, they need to provide
     # an initializer which accepts all attributes.
-    class EmbedsOne
+    class One
       attr_reader :klass
 
       def initialize(klass)

@@ -8,6 +8,9 @@ require 'porro/types/none'
 require 'porro/types/enum'
 require 'porro/types/blankified'
 
+require 'porro/embeds/one'
+require 'porro/embeds/many'
+
 module Porro
   module Types
 

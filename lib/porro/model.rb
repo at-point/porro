@@ -1,7 +1,4 @@
 require 'porro/types'
-require 'porro/types/none'
-
-require 'porro/relations'
 
 module Porro
   module Model
@@ -14,11 +11,11 @@ module Porro
       end
 
       def embeds_one(name, klass)
-        attribute name, Porro::Relations::EmbedsOne.new(klass)
+        attribute name, Porro::Embeds::One.new(klass)
       end
 
       def embeds_many(name, type, as: :array)
-        attribute name, Porro::Relations::EmbedsMany.factory(type, as)
+        attribute name, Porro::Embeds::Many.factory(type, as)
       end
 
       def porro_attributes

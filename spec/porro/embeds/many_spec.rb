@@ -3,9 +3,10 @@ require 'support/shared_type'
 require 'support/type_matchers'
 require 'support/models'
 
-require 'porro/relations/embeds_many'
+require 'porro/types'
+require 'porro/embeds/many'
 
-RSpec.describe Porro::Relations::EmbedsMany do
+RSpec.describe Porro::Embeds::Many do
   subject { described_class.factory(Email) }
   it_behaves_like 'a Type'
 
