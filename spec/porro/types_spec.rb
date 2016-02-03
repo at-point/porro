@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'support/shared_type'
+require 'support/models'
 
 require 'porro/types'
 
@@ -10,18 +10,19 @@ end
 
 RSpec.describe Porro::Types do
   subject { described_class }
+  let(:custom_type) { MultiplyType.new(3) }
 
   context '.factory' do
     it 'returns the type itself if it quacks like a type' do
-      expect(subject.factory(TypesSpecType)).to eq TypesSpecType
+      expect(subject.factory(custom_type)).to be custom_type
     end
 
-    it 'returns None for nil' do
-      expect(subject.factory(nil)).to eq Porro::Types::None
+    it 'raises ArgumentError for nil' do
+      expect { subject.factory(nil) }.to raise_error(ArgumentError)
     end
 
-    it 'returns None for anything else' do
-      expect(subject.factory('hello')).to eq Porro::Types::None
+    it 'raises ArgumentError for anything else' do
+      expect { subject.factory('hello') }.to raise_error(ArgumentError)
     end
 
     it 'returns a Blankified.new(Bool) for :bool' do

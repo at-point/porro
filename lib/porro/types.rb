@@ -11,16 +11,34 @@ require 'porro/types/blankified'
 module Porro
   module Types
 
+    TYPES = {
+      bool: Porro::Types::Bool,
+      date: Porro::Types::Date.new,
+      integer: Porro::Types::Numeric,
+      string: Porro::Types::String,
+      any: Porro::Types::Any
+    }
+
     module_function
 
     def factory(type)
-      return type if %w{load dump}.all? { |method| type.respond_to?(method) }
-      return Blankified.new(Porro::Types::Bool) if type == :bool
-      return Blankified.new(Porro::Types::Date.new) if type == :date
-      return Blankified.new(Porro::Types::Numeric) if type == :integer
-      return Blankified.new(Porro::Types::String) if type == :string
-      return Enum.new(type) if type.is_a?(Array)
-      None
+      fail ArgumentError, "type must be #{TYPES.keys.join(', ')} or implement #dump/#load" unless supported?(type)
+
+      return type if implements_interface?(type)
+      return Enum.new(type) if enum_type?(type)
+      Blankified.new(TYPES[type])
+    end
+
+    def supported?(type)
+      implements_interface?(type) || enum_type?(type) || TYPES.key?(type)
+    end
+
+    def implements_interface?(type)
+      %w{load dump}.all? { |method| type.respond_to?(method) }
+    end
+
+    def enum_type?(type)
+      type.is_a?(Array)
     end
   end
 end

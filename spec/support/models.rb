@@ -1,6 +1,6 @@
 require 'porro/model'
 
-class MultiplyCoder < Struct.new(:factor)
+class MultiplyType < Struct.new(:factor)
   def load(value)
     value.to_i * factor
   end
@@ -14,7 +14,7 @@ class Address
   include Porro::Model
 
   attribute :street, :string
-  attribute :zip, :numeric
+  attribute :zip, :integer
   attribute :city, :string
 end
 
@@ -23,7 +23,7 @@ class Email
   attribute :email, :string
 
   def ==(other)
-    return email == other.email if other.respond_to?(:email)
+    return email.to_s.downcase == other.email.to_s.downcase if other.respond_to?(:email)
     super
   end
 end
@@ -33,13 +33,13 @@ class Person
 
   attribute :name, :string
   attribute :loves_chocolate, :bool
-  attribute :strength, MultiplyCoder.new(5)
+  attribute :strength, MultiplyType.new(5)
 
-  embeds_one :address, Address
-  embeds_many :emails, Email
+  #embeds_one :address, Address
+  #embeds_many :emails, Email
 end
 
 class Magican < Person
-  attribute :strength, MultiplyCoder.new(10)
+  attribute :strength, MultiplyType.new(10)
   attribute :magic, :bool
 end
