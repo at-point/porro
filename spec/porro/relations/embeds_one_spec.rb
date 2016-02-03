@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'support/shared_type'
+require 'support/type_matchers'
 require 'support/models'
 
 require 'porro/relations/embeds_one'
@@ -12,7 +13,21 @@ RSpec.describe Porro::Relations::EmbedsOne do
     it_behaves_like 'a Type'
   end
 
-  it 'TBD: should maybe delegate to embedded klass as a factory?'
+  context '.factory' do
+    subject { described_class }
+
+    it 'raises ArgumentError when type is nil' do
+      expect { subject.factory(nil) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises ArgumentError when type does not implement #new' do
+      expect { subject.factory('String') }.to raise_error(ArgumentError)
+    end
+
+    it 'returns EmbedsOne instance with class embedded' do
+      expect(subject.factory(::String)).to be_an_embeds_one_with(::String)
+    end
+  end
 
   context '#load' do
     let(:fake) { Address.new(street: 'Bahnhofstrasse 1') }

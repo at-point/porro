@@ -8,10 +8,22 @@ RSpec.describe Porro::Relations::EmbedsMany do
   subject { described_class.new(Email) }
   it_behaves_like 'a Type'
 
-  it 'TBD: should maybe allow to define use of Set vs Array'
-
   let(:personal) { Email.new(email: 'private@example.com') }
   let(:work) { Email.new(email: 'work@example.com') }
+
+  context '.factory' do
+    subject { described_class }
+
+    it 'raises ArgumentError for nil' do
+      expect { subject.factory(nil) }.to raise_error ArgumentError
+    end
+
+    it 'raises ArgumentError for anything that does not implement #new' do
+      expect { subject.factory('String') }.to raise_error ArgumentError
+    end
+
+
+  end
 
   context '#load' do
     it 'returns an empty Array' do
@@ -25,6 +37,20 @@ RSpec.describe Porro::Relations::EmbedsMany do
 
     it 'returns the same object if already of correct class' do
       expect(subject.load([personal, work])).to eq [personal, work]
+    end
+
+    context 'with a Set' do
+      subject { described_class.new(String, Set) }
+
+      it 'returns an empty Set' do
+        expect(subject.load(nil)).to be_a Set
+        expect(subject.load(nil)).to eq Set.new
+      end
+
+      it 'is a Set, so emails are not added multiple times' do
+        ary = %w{work@example.com private@example.com work@example.com}
+        expect(subject.load(ary)).to eq Set.new(%w{work@example.com private@example.com})
+      end
     end
   end
 

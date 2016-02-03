@@ -13,18 +13,12 @@ module Porro
         generate_porro_instance_accessors_for(name, type)
       end
 
-      def embeds_one(name, type)
-        name = name.to_sym
-        relation = Porro::Relations.factory(:one, type)
-        porro_attributes[name] = relation
-        generate_porro_instance_accessors_for(name, relation)
+      def embeds_one(name, klass)
+        attribute name, Porro::Relations::EmbedsOne.factory(klass)
       end
 
-      def embeds_many(name, type)
-        name = name.to_sym
-        relation = Porro::Relations.factory(:many, type)
-        porro_attributes[name] = relation
-        generate_porro_instance_accessors_for(name, relation)
+      def embeds_many(name, type, as: :array)
+        attribute name, Porro::Relations::EmbedsMany.factory(type, as: as)
       end
 
       def porro_attributes

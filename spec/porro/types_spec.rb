@@ -1,12 +1,8 @@
 require 'spec_helper'
 require 'support/models'
+require 'support/type_matchers'
 
 require 'porro/types'
-
-class TypesSpecType
-  def self.load(arg); 'LOAD' end
-  def self.dump(arg); 'DUMP' end
-end
 
 RSpec.describe Porro::Types do
   subject { described_class }
@@ -26,27 +22,19 @@ RSpec.describe Porro::Types do
     end
 
     it 'returns a Blankified.new(Bool) for :bool' do
-      type = subject.factory(:bool)
-      expect(type).to be_a Porro::Types::Blankified
-      expect(type.wrapped).to eq Porro::Types::Bool
+      expect(subject.factory(:bool)).to be_a_blankified_with(Porro::Types::Bool)
     end
 
     it 'returns a Blankified.new(String) for :string' do
-      type = subject.factory(:string)
-      expect(type).to be_a Porro::Types::Blankified
-      expect(type.wrapped).to eq Porro::Types::String
+      expect(subject.factory(:string)).to be_a_blankified_with(Porro::Types::String)
     end
 
     it 'returns a Blankified.new(Date) for :date' do
-      type = subject.factory(:date)
-      expect(type).to be_a Porro::Types::Blankified
-      expect(type.wrapped).to be_a Porro::Types::Date
+      expect(subject.factory(:date)).to be_a_blankified_with(Porro::Types::Date)
     end
 
     it 'returns a Blankified.new(Numeric) for :integer' do
-      type = subject.factory(:integer)
-      expect(type).to be_a Porro::Types::Blankified
-      expect(type.wrapped).to be Porro::Types::Numeric
+      expect(subject.factory(:integer)).to be_a_blankified_with(Porro::Types::Numeric)
     end
   end
 end

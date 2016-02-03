@@ -1,3 +1,4 @@
+require 'porro/types'
 require 'porro/relations/embeds_one'
 
 module Porro
@@ -6,20 +7,22 @@ module Porro
     # Embedded / nested objects, they need to provide
     # an initializer which accepts all attributes.
     class EmbedsMany
-      attr_reader :embedder
+      attr_reader :type, :collection_klass
 
-      def initialize(klass)
-        @embedder = EmbedsOne.new(klass)
+      def initialize(type, collection_klass = Array)
+        @type = type
+        @collection_klass = collection_klass
       end
 
       def load(ary)
-        return [] unless ary.respond_to?(:map)
-        ary.map { |attributes| embedder.load(attributes) }
+        return collection_klass.new unless ary.respond_to?(:map)
+        values = ary.map { |attributes| type.load(attributes) }
+        collection_klass.new values.compact
       end
 
       def dump(ary)
-        return [] unless ary.respond_to?(:map)
-        ary.map { |object| embedder.dump(object) }
+        return [] unless ary.respond_to?(:to_a)
+        ary.to_a.map { |object| type.dump(object) }
       end
     end
   end

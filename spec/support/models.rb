@@ -35,7 +35,7 @@ class Person
   attribute :loves_chocolate, :bool
   attribute :strength, MultiplyType.new(5)
 
-  #embeds_one :address, Address
+  embeds_one :address, Address
   #embeds_many :emails, Email
 end
 
