@@ -8,7 +8,7 @@ require 'porro/types/collection'
 
 RSpec.describe Porro::Types::Collection do
   subject { Porro.collection(Email) }
-  it_behaves_like 'a Type'
+  it_behaves_like 'a Type', supports: false
 
   let(:personal) { Email.new(email: 'private@example.com') }
   let(:work) { Email.new(email: 'work@example.com') }
