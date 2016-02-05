@@ -11,6 +11,3 @@ module Porro
     end
   end
 end
-
-require 'porro/types/blankified'
-require 'porro/types/strip'
