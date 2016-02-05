@@ -1,19 +1,20 @@
 require 'porro/types/any'
+require 'porro/types/none'
+
 require 'porro/types/bool'
 require 'porro/types/date'
 require 'porro/types/numeric'
 require 'porro/types/string'
-require 'porro/types/none'
 
 require 'porro/types/enum'
-require 'porro/types/blankified'
+require 'porro/types/object'
+require 'porro/types/collection'
 
-require 'porro/embeds/one'
-require 'porro/embeds/many'
+require 'porro/types/blankified'
+require 'porro/types/strip'
 
 module Porro
   module Types
-
     TYPES = {
       bool: Porro::Types::Bool,
       date: Porro::Types::Date.new,
@@ -28,7 +29,7 @@ module Porro
       fail ArgumentError, "type must be #{TYPES.keys.join(', ')} or implement #dump/#load" unless supports?(type)
 
       return type if implements_interface?(type)
-      return Embeds::One.new(type[:embeds]) if embeds_type?(type)
+      return Types::Object.new(type[:embeds]) if embeds_type?(type)
       return Enum.new(type) if enum_type?(type)
       Blankified.new(TYPES[type])
     end

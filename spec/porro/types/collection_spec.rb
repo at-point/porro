@@ -4,9 +4,9 @@ require 'support/type_matchers'
 require 'support/models'
 
 require 'porro/types'
-require 'porro/embeds/many'
+require 'porro/types/collection'
 
-RSpec.describe Porro::Embeds::Many do
+RSpec.describe Porro::Types::Collection do
   subject { Porro.collection(Email) }
   it_behaves_like 'a Type'
 

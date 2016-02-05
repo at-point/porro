@@ -4,9 +4,9 @@ require 'support/type_matchers'
 require 'support/models'
 
 require 'porro/types'
-require 'porro/embeds/one'
+require 'porro/types/object'
 
-RSpec.describe Porro::Embeds::One do
+RSpec.describe Porro::Types::Object do
   subject { described_class.new(Address) }
 
   context 'compliance' do
