@@ -7,31 +7,29 @@ require 'porro/types'
 require 'porro/embeds/many'
 
 RSpec.describe Porro::Embeds::Many do
-  subject { described_class.factory(Email) }
+  subject { Porro.collection(Email) }
   it_behaves_like 'a Type'
 
   let(:personal) { Email.new(email: 'private@example.com') }
   let(:work) { Email.new(email: 'work@example.com') }
 
   context '.factory' do
-    subject { described_class }
-
     it 'raises ArgumentError for nil' do
-      expect { subject.factory(nil) }.to raise_error ArgumentError
+      expect { Porro.collection(nil) }.to raise_error ArgumentError
     end
 
     it 'raises ArgumentError for anything that does not implement #new' do
-      expect { subject.factory('String') }.to raise_error ArgumentError
+      expect { Porro.collection('String') }.to raise_error ArgumentError
     end
 
     it 'returns a blankified for :string' do
-      rel = subject.factory(:string)
+      rel = Porro.collection(:string)
       expect(rel).to be_an_embeds_many_as(Array)
       expect(rel.type).to be_a_blankified_with(Porro::Types::String)
     end
 
     it 'returns an EmbedsOne for Email' do
-      rel = subject.factory(Email)
+      rel = Porro.collection(Email)
       expect(rel).to be_an_embeds_many_as(Array)
       expect(rel.type).to be_an_embeds_one_with(Email)
     end
@@ -52,7 +50,7 @@ RSpec.describe Porro::Embeds::Many do
     end
 
     context 'with a Set' do
-      subject { described_class.factory(:string, Set) }
+      subject { Porro.set(:string) }
 
       it 'returns an empty Set' do
         expect(subject.load(nil)).to be_a Set

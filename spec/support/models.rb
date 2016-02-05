@@ -13,17 +13,17 @@ end
 class Address
   include Porro::Model
 
-  attribute :street, :string
-  attribute :zip, :integer
-  attribute :city, :string
+  attribute :street, Porro.string.blankify
+  attribute :zip,    Porro.integer.blankify
+  attribute :city,   Porro.string.blankify
 end
 
 class Email
   include Porro::Model
-  attribute :email, :string
+  attribute :email, Porro.string.email
 
   def ==(other)
-    return email.to_s.downcase == other.email.to_s.downcase if other.respond_to?(:email)
+    return email == other.email if other.respond_to?(:email)
     super
   end
 end
@@ -31,19 +31,12 @@ end
 class Person
   include Porro::Model
 
-  attribute :name, :string
-  attribute :loves_chocolate, :bool
-  attribute :strength, MultiplyType.new(5)
+  attribute :name, Porro.string.blankify.strip
+  attribute :loves_chocolate, Porro.bool.blankify
+  attribute :strength, Porro.custom(MultiplyType.new(5)).blankify
 
-  embeds_one :address, Address
-  embeds_many :emails, Email
-
-  #attribute :address, embed: Address
-  #attribute :address, embed: Address, type: :array
-
-  #attribute :address, many: Address
-  #attribute :emails, array: Email
-  #attribute :emails, set: Email
+  attribute :address, Porro.object(Address)
+  attribute :emails, Porro.set(Email)
 end
 
 class Magican < Person

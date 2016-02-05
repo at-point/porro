@@ -10,14 +10,6 @@ module Porro
         generate_porro_instance_accessors_for(name, type)
       end
 
-      def embeds_one(name, klass)
-        attribute name, Porro::Embeds::One.new(klass)
-      end
-
-      def embeds_many(name, type, as: :array)
-        attribute name, Porro::Embeds::Many.factory(type, as)
-      end
-
       def porro_attributes
         @porro_attributes ||= Hash.new
       end

@@ -1,14 +1,20 @@
+require 'porro/types/base'
+
 module Porro
+  def self.integer
+    Types::Numeric
+  end
+
   module Types
     module Numeric
-      module_function
+      extend Base
 
-      def load(value)
+      def self.load(value)
         return 0 unless value.respond_to?(:to_i)
         value.to_i
       end
 
-      def dump(attribute)
+      def self.dump(attribute)
         load(attribute)
       end
     end

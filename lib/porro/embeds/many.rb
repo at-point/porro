@@ -1,16 +1,26 @@
 require 'porro/embeds/one'
 
 module Porro
+  def self.collection(type, collection = Array)
+    type = Embeds::Many.wrap_type(type)
+    collection = Embeds::Many.wrap_collection(collection)
+    Embeds::Many.new type, collection
+  end
+
+  def self.array(type)
+    collection(type, Array)
+  end
+
+  def self.set(type)
+    collection(type, Set)
+  end
+
   module Embeds
 
     # Embedded / nested objects, they need to provide
     # an initializer which accepts all attributes.
     class Many
       attr_reader :type, :collection_klass
-
-      def self.factory(type, collection = Array)
-        new wrap_type(type), wrap_collection(collection)
-      end
 
       def self.wrap_type(type)
         return Types.factory(type) if Types.supports?(type)

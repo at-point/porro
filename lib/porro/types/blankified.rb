@@ -1,6 +1,8 @@
 module Porro
   module Types
     class Blankified
+      include Base
+
       attr_reader :wrapped
 
       def self.blank?(obj)
