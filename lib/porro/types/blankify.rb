@@ -1,6 +1,6 @@
 module Porro
   module Types
-    class Blankified
+    class Blankify
       include Base
 
       attr_reader :wrapped

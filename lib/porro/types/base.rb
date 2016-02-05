@@ -2,7 +2,7 @@ module Porro
   module Types
     module Base
       def blankify
-        Blankified.new(self)
+        Blankify.new(self)
       end
 
       def strip

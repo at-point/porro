@@ -21,19 +21,19 @@ RSpec.describe Porro::Types do
       expect { subject.factory('hello') }.to raise_error(ArgumentError)
     end
 
-    it 'returns a Blankified.new(Bool) for :bool' do
+    it 'returns a Blankify.new(Bool) for :bool' do
       expect(subject.factory(:bool)).to be_a_blankified_with(Porro::Types::Bool)
     end
 
-    it 'returns a Blankified.new(String) for :string' do
+    it 'returns a Blankify.new(String) for :string' do
       expect(subject.factory(:string)).to be_a_blankified_with(Porro::Types::String)
     end
 
-    it 'returns a Blankified.new(Date) for :date' do
+    it 'returns a Blankify.new(Date) for :date' do
       expect(subject.factory(:date)).to be_a_blankified_with(Porro::Types::Date)
     end
 
-    it 'returns a Blankified.new(Numeric) for :integer' do
+    it 'returns a Blankify.new(Numeric) for :integer' do
       expect(subject.factory(:integer)).to be_a_blankified_with(Porro::Types::Numeric)
     end
   end

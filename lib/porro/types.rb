@@ -10,7 +10,7 @@ require 'porro/types/enum'
 require 'porro/types/object'
 require 'porro/types/collection'
 
-require 'porro/types/blankified'
+require 'porro/types/blankify'
 require 'porro/types/strip'
 
 module Porro
@@ -31,7 +31,7 @@ module Porro
       return type if implements_interface?(type)
       return Types::Object.new(type[:embeds]) if embeds_type?(type)
       return Enum.new(type) if enum_type?(type)
-      Blankified.new(TYPES[type])
+      TYPES[type].blankify
     end
 
     def supports?(type)

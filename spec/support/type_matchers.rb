@@ -1,7 +1,7 @@
 # For Porro::Types::Blankified
 RSpec::Matchers.define :be_a_blankified_with do |expected|
   match do |actual|
-    actual.is_a?(Porro::Types::Blankified) &&
+    actual.is_a?(Porro::Types::Blankify) &&
       (actual.wrapped == expected || actual.wrapped.is_a?(expected))
   end
 end
