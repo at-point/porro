@@ -13,6 +13,11 @@ RSpec.describe Porro::Types do
       expect(subject.factory(custom_type)).to be custom_type
     end
 
+    it 'returns the type itself when using the builder DSL' do
+      builder = Porro.string.strip.blankify
+      expect(subject.factory(builder)).to be builder
+    end
+
     it 'raises ArgumentError for nil' do
       expect { subject.factory(nil) }.to raise_error(ArgumentError)
     end
@@ -35,6 +40,10 @@ RSpec.describe Porro::Types do
 
     it 'returns a Blankify.new(Numeric) for :integer' do
       expect(subject.factory(:integer)).to be_a_blankified_with(Porro::Types::Numeric)
+    end
+
+    it 'returns a Object.new(Klass) for Klass' do
+      expect(subject.factory(Email)).to be_an_embeds_one_with(Email)
     end
   end
 end

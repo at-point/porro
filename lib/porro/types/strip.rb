@@ -12,7 +12,7 @@ module Porro
       end
 
       def initialize(wrapped)
-        Porro::Types.implements_interface!(wrapped)
+        Porro::Types.typeish!(wrapped)
         @wrapped = wrapped
       end
 

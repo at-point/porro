@@ -1,4 +1,5 @@
 require 'porro/model'
+require 'porro/types'
 
 class MultiplyType < Struct.new(:factor)
   def load(value)

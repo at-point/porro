@@ -23,8 +23,8 @@ module Porro
       attr_reader :type, :collection_klass
 
       def self.wrap_type(type)
-        return Types.factory(type) if Types.supports?(type)
-        Types::Object.new(type)
+        return Types::Object.new(type) if type.respond_to?(:new)
+        Types.factory(type)
       end
 
       def self.wrap_collection(klass)
@@ -35,7 +35,7 @@ module Porro
       end
 
       def initialize(type, collection_klass = Array)
-        Types.implements_interface!(type)
+        Types.typeish!(type)
         fail ArgumentError, 'collection_klass must implement .new' unless collection_klass.respond_to?(:new)
 
         @type = type

@@ -20,38 +20,32 @@ module Porro
       date: Porro::Types::Date.new,
       integer: Porro::Types::Numeric,
       string: Porro::Types::String,
-      any: Porro::Types::Any
+      any: Porro::Types::Any,
+      none: Porro::Types::None
     }
 
-    module_function
+    def self.factory(type)
+      fail ArgumentError, 'type is required, was: nil' unless type
+      return type if typeish?(type)
 
-    def factory(type)
-      fail ArgumentError, "type must be #{TYPES.keys.join(', ')} or implement #dump/#load" unless supports?(type)
-
-      return type if implements_interface?(type)
-      return Types::Object.new(type[:embeds]) if embeds_type?(type)
-      return Enum.new(type) if enum_type?(type)
-      TYPES[type].blankify
+      object_factory(type) || types_factory(type).blankify
     end
 
-    def supports?(type)
-      implements_interface?(type) || embeds_type?(type) || enum_type?(type) || TYPES.key?(type)
+    def self.object_factory(type)
+      Types::Object.new(type) if type.respond_to?(:new)
     end
 
-    def implements_interface?(type)
+    def self.types_factory(type)
+      fail ArgumentError, "type must implement #load/#dump or be one of #{TYPES.keys.join(', ')}" unless TYPES.key?(type)
+      TYPES[type]
+    end
+
+    def self.typeish?(type)
       %w{load dump}.all? { |method| type.respond_to?(method) }
     end
 
-    def implements_interface!(type)
-      fail ArgumentError, 'type must implement #load/#dump' unless implements_interface?(type)
-    end
-
-    def embeds_type?(type)
-      type.is_a?(Hash) && type[:embeds]
-    end
-
-    def enum_type?(type)
-      type.is_a?(Array)
+    def self.typeish!(type)
+      fail ArgumentError, 'type must implement #load/#dump' unless typeish?(type)
     end
   end
 end
