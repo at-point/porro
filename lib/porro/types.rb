@@ -9,6 +9,7 @@ require 'porro/types/string'
 require 'porro/types/enum'
 require 'porro/types/object'
 require 'porro/types/collection'
+require 'porro/types/email'
 
 require 'porro/types/blankify'
 require 'porro/types/strip'
