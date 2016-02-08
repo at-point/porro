@@ -3,9 +3,9 @@ require 'porro/types'
 module Porro
   module Model
     module ClassMethods
-      def attribute(name, type)
+      def attribute(name, type, options = {})
         name = name.to_sym
-        type = Porro::Types.factory(type)
+        type = Porro::Types.factory(type, options)
         porro_attributes[name] = type
         generate_porro_instance_accessors_for(name, type)
       end

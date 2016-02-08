@@ -28,7 +28,7 @@ module Porro
       fail ArgumentError, 'type is required, was: nil' unless type
       return type if typeish?(type)
 
-      type = object_factory(type) || types_factory(type)
+      type = object_factory(type) || collection_factory(type, class_name) || types_factory(type)
       type = type.blankify if blankify
       type = type.strip if strip
       type
@@ -36,6 +36,13 @@ module Porro
 
     def self.object_factory(type)
       Types::Object.new(type) if type.respond_to?(:new)
+    end
+
+    def self.collection_factory(type, class_name)
+      if [:array, :set].include?(type) && class_name
+        inner_type = object_factory(class_name) || types_factory(class_name)
+        Porro::Types::Collection.new(inner_type, type == :set ? ::Set : ::Array)
+      end
     end
 
     def self.types_factory(type)

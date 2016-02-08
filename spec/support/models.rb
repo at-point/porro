@@ -37,7 +37,7 @@ class Person
   attribute :strength, Porro.custom(MultiplyType.new(5)).blankify
 
   attribute :address, Porro.object(Address)
-  attribute :emails, Porro.set(Email)
+  attribute :emails, :set, class_name: Email
 end
 
 class Magican < Person
