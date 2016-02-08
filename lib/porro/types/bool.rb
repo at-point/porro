@@ -10,7 +10,7 @@ module Porro
     module Bool
       extend Base
 
-      FALSEY = ['', '0', 'false']
+      FALSEY = ['0', 'false', 'no', 'off']
 
       def self.falsey?(value)
         !value || FALSEY.include?(value.to_s.strip.downcase)

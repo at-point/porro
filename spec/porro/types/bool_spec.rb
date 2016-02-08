@@ -36,6 +36,11 @@ RSpec.describe Porro::Types::Bool do
       it 'accepts "any non empty string"' do
         expect(subject.load('any non empty string')).to eq true
       end
+
+      it 'accepts "" (empty string) as truthy' do
+        expect(subject.load('')).to eq true
+        expect(subject.load("\t ")).to eq true
+      end
     end
 
     context 'falsey' do
@@ -55,13 +60,16 @@ RSpec.describe Porro::Types::Bool do
         expect(subject.load('FALSE')).to eq false
       end
 
-      it 'accepts nil' do
-        expect(subject.load(nil)).to eq false
+      it 'accepts "no"' do
+        expect(subject.load('no')).to eq false
       end
 
-      it 'accepts "" (empty string)' do
-        expect(subject.load('')).to eq false
-        expect(subject.load("\t ")).to eq false
+      it 'accepts "off"' do
+        expect(subject.load('off')).to eq false
+      end
+
+      it 'accepts nil' do
+        expect(subject.load(nil)).to eq false
       end
     end
   end
