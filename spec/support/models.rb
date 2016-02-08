@@ -14,9 +14,9 @@ end
 class Address
   include Porro::Model
 
-  attribute :street, Porro.string.blankify
-  attribute :zip,    Porro.integer.blankify
-  attribute :city,   Porro.string.blankify
+  attribute :street, :string, blankify: true
+  attribute :zip,    :integer, blankify: true
+  attribute :city,   :string, blankify: true
 end
 
 class Email
@@ -32,8 +32,8 @@ end
 class Person
   include Porro::Model
 
-  attribute :name, Porro.string.blankify.strip
-  attribute :loves_chocolate, Porro.bool.blankify
+  attribute :name, :string, blankify: true, strip: true
+  attribute :loves_chocolate, :bool, blankify: true
   attribute :strength, Porro.custom(MultiplyType.new(5)).blankify
 
   attribute :address, Address
