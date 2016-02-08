@@ -36,7 +36,7 @@ class Person
   attribute :loves_chocolate, Porro.bool.blankify
   attribute :strength, Porro.custom(MultiplyType.new(5)).blankify
 
-  attribute :address, Porro.object(Address)
+  attribute :address, Address
   attribute :emails, :set, class_name: Email
 end
 
