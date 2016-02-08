@@ -2,9 +2,7 @@ require 'porro/types/object'
 
 module Porro
   def self.collection(type, collection = Array)
-    type = Types::Collection.wrap_type(type)
-    collection = Types::Collection.wrap_collection(collection)
-    Types::Collection.new type, collection
+    Types::Collection.new Types.factory(type), collection
   end
 
   def self.array(type)
@@ -22,24 +20,22 @@ module Porro
     class Collection
       attr_reader :type, :collection_klass
 
-      def self.wrap_type(type)
-        return Types::Object.new(type) if type.respond_to?(:new)
-        Types.factory(type)
-      end
+      COLLECTIONS = {
+        array: Array,
+        set: Set
+      }
 
       def self.wrap_collection(klass)
         return klass if klass.respond_to?(:new)
-        return Array if klass == :array
-        return Set if klass == :set
+        return COLLECTIONS[klass] if COLLECTIONS.key?(klass)
         fail ArgumentError, 'invalid collection class, only :array, :set allowed'
       end
 
       def initialize(type, collection_klass = Array)
         Types.typeish!(type)
-        fail ArgumentError, 'collection_klass must implement .new' unless collection_klass.respond_to?(:new)
 
         @type = type
-        @collection_klass = collection_klass
+        @collection_klass = self.class.wrap_collection(collection_klass)
       end
 
       def load(ary)
