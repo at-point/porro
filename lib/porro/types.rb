@@ -24,11 +24,14 @@ module Porro
       none: Porro::Types::None
     }
 
-    def self.factory(type)
+    def self.factory(type, class_name: nil, blankify: false, strip: false)
       fail ArgumentError, 'type is required, was: nil' unless type
       return type if typeish?(type)
 
-      object_factory(type) || types_factory(type).blankify
+      type = object_factory(type) || types_factory(type)
+      type = type.blankify if blankify
+      type = type.strip if strip
+      type
     end
 
     def self.object_factory(type)

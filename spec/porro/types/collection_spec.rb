@@ -25,7 +25,7 @@ RSpec.describe Porro::Types::Collection do
     it 'returns a blankified for :string' do
       rel = Porro.collection(:string)
       expect(rel).to be_an_embeds_many_as(Array)
-      expect(rel.type).to be_a_blankified_with(Porro::Types::String)
+      expect(rel.type).to be Porro::Types::String
     end
 
     it 'returns an EmbedsOne for Email' do

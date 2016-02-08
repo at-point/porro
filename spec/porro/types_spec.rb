@@ -27,19 +27,25 @@ RSpec.describe Porro::Types do
     end
 
     it 'returns a Blankify.new(Bool) for :bool' do
-      expect(subject.factory(:bool)).to be_a_blankified_with(Porro::Types::Bool)
+      expect(subject.factory(:bool, blankify: true)).to be_a_blankified_with(Porro::Types::Bool)
     end
 
     it 'returns a Blankify.new(String) for :string' do
-      expect(subject.factory(:string)).to be_a_blankified_with(Porro::Types::String)
+      expect(subject.factory(:string, blankify: true)).to be_a_blankified_with(Porro::Types::String)
     end
 
     it 'returns a Blankify.new(Date) for :date' do
-      expect(subject.factory(:date)).to be_a_blankified_with(Porro::Types::Date)
+      expect(subject.factory(:date, blankify: true)).to be_a_blankified_with(Porro::Types::Date)
     end
 
     it 'returns a Blankify.new(Numeric) for :integer' do
-      expect(subject.factory(:integer)).to be_a_blankified_with(Porro::Types::Numeric)
+      expect(subject.factory(:integer, blankify: true)).to be_a_blankified_with(Porro::Types::Numeric)
+    end
+
+    it 'returns a Strip.new(String) for :integer, strip: true' do
+      type = subject.factory(:string, strip: true)
+      expect(type).to be_a Porro::Types::Strip
+      expect(type.wrapped).to eq Porro::Types::String
     end
 
     it 'returns a Object.new(Klass) for Klass' do
