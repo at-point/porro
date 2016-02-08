@@ -1,6 +1,8 @@
 module Porro
   module Types
-    class Blankified
+    class Blankify
+      include Base
+
       attr_reader :wrapped
 
       def self.blank?(obj)
@@ -10,7 +12,7 @@ module Porro
       end
 
       def initialize(wrapped)
-        Porro::Types.implements_interface!(wrapped)
+        Types.typeish!(wrapped)
         @wrapped = wrapped
       end
 

@@ -1,24 +1,13 @@
 require 'porro/types'
-require 'porro/types/none'
-
-require 'porro/relations'
 
 module Porro
   module Model
     module ClassMethods
-      def attribute(name, type)
+      def attribute(name, type, options = {})
         name = name.to_sym
-        type = Porro::Types.factory(type)
+        type = Porro::Types.factory(type, options)
         porro_attributes[name] = type
         generate_porro_instance_accessors_for(name, type)
-      end
-
-      def embeds_one(name, klass)
-        attribute name, Porro::Relations::EmbedsOne.new(klass)
-      end
-
-      def embeds_many(name, type, as: :array)
-        attribute name, Porro::Relations::EmbedsMany.factory(type, as)
       end
 
       def porro_attributes

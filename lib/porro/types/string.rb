@@ -1,13 +1,19 @@
+require 'porro/types/base'
+
 module Porro
+  def self.string
+    Types::String
+  end
+
   module Types
     module String
-      module_function
+      extend Base
 
-      def load(value)
+      def self.load(value)
         value.to_s
       end
 
-      def dump(value)
+      def self.dump(value)
         value.to_s
       end
     end

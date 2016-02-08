@@ -3,9 +3,10 @@ require 'support/shared_type'
 require 'support/type_matchers'
 require 'support/models'
 
-require 'porro/relations/embeds_one'
+require 'porro/types'
+require 'porro/types/object'
 
-RSpec.describe Porro::Relations::EmbedsOne do
+RSpec.describe Porro::Types::Object do
   subject { described_class.new(Address) }
 
   context 'compliance' do

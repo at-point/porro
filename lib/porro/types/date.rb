@@ -1,10 +1,13 @@
 require 'date'
+require 'porro/types/base'
 
 module Porro
   module Types
     class Date
       # 2012-04-23T18:25:43.511Z, http://stackoverflow.com/questions/10286204/the-right-json-date-format
       DATE_FORMAT = '%FT00:00:00.000Z'
+
+      include Base
 
       attr_reader :default_proc
 

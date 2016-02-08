@@ -1,10 +1,12 @@
+require 'porro/types/base'
+
 module Porro
   module Types
     module None
-      module_function
+      extend Base
 
-      def load(value); nil end
-      def dump(attribute); nil end
+      def self.load(value); nil end
+      def self.dump(attribute); nil end
     end
   end
 end

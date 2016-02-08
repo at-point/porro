@@ -1,9 +1,10 @@
 require 'spec_helper'
 require 'support/shared_type'
 
-require 'porro/types'
+require 'porro/types/blankify'
+require 'porro/types/any'
 
-RSpec.describe Porro::Types::Blankified do
+RSpec.describe Porro::Types::Blankify do
   subject { described_class.new(Porro::Types::Any) }
   it_behaves_like 'a Type'
 

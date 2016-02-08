@@ -1,36 +1,41 @@
-require 'porro/types'
-require 'porro/relations/embeds_one'
+require 'porro/types/object'
 
 module Porro
-  module Relations
+  def self.collection(type, collection = Array)
+    Types::Collection.new Types.factory(type), collection
+  end
+
+  def self.array(type)
+    collection(type, Array)
+  end
+
+  def self.set(type)
+    collection(type, Set)
+  end
+
+  module Types
 
     # Embedded / nested objects, they need to provide
     # an initializer which accepts all attributes.
-    class EmbedsMany
+    class Collection
       attr_reader :type, :collection_klass
 
-      def self.factory(type, collection = Array)
-        new wrap_type(type), wrap_collection(collection)
-      end
-
-      def self.wrap_type(type)
-        return Types.factory(type) if Types.supports?(type)
-        EmbedsOne.new(type)
-      end
+      COLLECTIONS = {
+        array: Array,
+        set: Set
+      }
 
       def self.wrap_collection(klass)
         return klass if klass.respond_to?(:new)
-        return Array if klass == :array
-        return Set if klass == :set
+        return COLLECTIONS[klass] if COLLECTIONS.key?(klass)
         fail ArgumentError, 'invalid collection class, only :array, :set allowed'
       end
 
       def initialize(type, collection_klass = Array)
-        Types.implements_interface!(type)
-        fail ArgumentError, 'collection_klass must implement .new' unless collection_klass.respond_to?(:new)
+        Types.typeish!(type)
 
         @type = type
-        @collection_klass = collection_klass
+        @collection_klass = self.class.wrap_collection(collection_klass)
       end
 
       def load(ary)

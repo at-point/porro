@@ -3,34 +3,33 @@ require 'support/shared_type'
 require 'support/type_matchers'
 require 'support/models'
 
-require 'porro/relations/embeds_many'
+require 'porro/types'
+require 'porro/types/collection'
 
-RSpec.describe Porro::Relations::EmbedsMany do
-  subject { described_class.factory(Email) }
-  it_behaves_like 'a Type'
+RSpec.describe Porro::Types::Collection do
+  subject { Porro.collection(Email) }
+  it_behaves_like 'a Type', supports: false
 
   let(:personal) { Email.new(email: 'private@example.com') }
   let(:work) { Email.new(email: 'work@example.com') }
 
   context '.factory' do
-    subject { described_class }
-
     it 'raises ArgumentError for nil' do
-      expect { subject.factory(nil) }.to raise_error ArgumentError
+      expect { Porro.collection(nil) }.to raise_error ArgumentError
     end
 
     it 'raises ArgumentError for anything that does not implement #new' do
-      expect { subject.factory('String') }.to raise_error ArgumentError
+      expect { Porro.collection('String') }.to raise_error ArgumentError
     end
 
     it 'returns a blankified for :string' do
-      rel = subject.factory(:string)
+      rel = Porro.collection(:string)
       expect(rel).to be_an_embeds_many_as(Array)
-      expect(rel.type).to be_a_blankified_with(Porro::Types::String)
+      expect(rel.type).to be Porro::Types::String
     end
 
     it 'returns an EmbedsOne for Email' do
-      rel = subject.factory(Email)
+      rel = Porro.collection(Email)
       expect(rel).to be_an_embeds_many_as(Array)
       expect(rel.type).to be_an_embeds_one_with(Email)
     end
@@ -51,7 +50,7 @@ RSpec.describe Porro::Relations::EmbedsMany do
     end
 
     context 'with a Set' do
-      subject { described_class.factory(:string, Set) }
+      subject { Porro.set(:string) }
 
       it 'returns an empty Set' do
         expect(subject.load(nil)).to be_a Set

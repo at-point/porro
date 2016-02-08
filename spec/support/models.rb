@@ -1,4 +1,5 @@
 require 'porro/model'
+require 'porro/types'
 
 class MultiplyType < Struct.new(:factor)
   def load(value)
@@ -13,17 +14,17 @@ end
 class Address
   include Porro::Model
 
-  attribute :street, :string
-  attribute :zip, :integer
-  attribute :city, :string
+  attribute :street, :string, blankify: true
+  attribute :zip,    :integer, blankify: true
+  attribute :city,   :string, blankify: true
 end
 
 class Email
   include Porro::Model
-  attribute :email, :string
+  attribute :email, Porro.string.email
 
   def ==(other)
-    return email.to_s.downcase == other.email.to_s.downcase if other.respond_to?(:email)
+    return email == other.email if other.respond_to?(:email)
     super
   end
 end
@@ -31,19 +32,12 @@ end
 class Person
   include Porro::Model
 
-  attribute :name, :string
-  attribute :loves_chocolate, :bool
-  attribute :strength, MultiplyType.new(5)
+  attribute :name, :string, blankify: true, strip: true
+  attribute :loves_chocolate, :bool, blankify: true
+  attribute :strength, Porro.custom(MultiplyType.new(5)).blankify
 
-  embeds_one :address, Address
-  embeds_many :emails, Email
-
-  #attribute :address, embed: Address
-  #attribute :address, embed: Address, type: :array
-
-  #attribute :address, many: Address
-  #attribute :emails, array: Email
-  #attribute :emails, set: Email
+  attribute :address, Address
+  attribute :emails, :set, class_name: Email
 end
 
 class Magican < Person
