@@ -4,26 +4,20 @@ module Porro
       include Base
 
       attr_reader :wrapped
-      attr_reader :default
+      attr_reader :default_proc
 
       def initialize(wrapped, default = nil)
         Types.typeish!(wrapped)
         @wrapped = wrapped
-        @default = default
+        @default_proc = default.respond_to?(:call) ? default : -> { default }
       end
 
       def load(value)
-        @wrapped.load(value) || get_default
+        @wrapped.load(value) || default_proc.call
       end
 
       def dump(attribute)
-        @wrapped.dump(attribute) || get_default
-      end
-
-      private
-
-      def get_default
-        default.respond_to?(:call) ? default.call : default
+        @wrapped.dump(attribute) || default_proc.call
       end
     end
   end
