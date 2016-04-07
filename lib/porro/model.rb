@@ -27,7 +27,7 @@ module Porro
 
       def generate_porro_instance_accessors_for(name, type)
         porro_module.module_eval do
-          define_method("#{name}")  { read_porro_attribute_raw(name) }
+          define_method("#{name}")  { read_porro_attribute(name) }
           define_method("#{name}=") { |value| write_porro_attribute(name, value) }
           define_method("#{name}?") { send(name) }
         end
