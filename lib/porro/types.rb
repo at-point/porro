@@ -13,6 +13,7 @@ require 'porro/types/email'
 
 require 'porro/types/blankify'
 require 'porro/types/strip'
+require 'porro/types/default'
 
 module Porro
   module Types
