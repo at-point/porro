@@ -5,20 +5,33 @@ require 'porro/types/default'
 require 'porro/types/any'
 
 RSpec.describe Porro::Types::Default do
-  subject { described_class.new(Porro::Types::Any, default_value) }
-  let!(:default_value) { 'cheese cake' }
+  let(:default_value) { 'a default' }
+  let(:default_callable) { -> { default_value } }
+  let(:specific_value) { 'a specific' }
+  
   it_behaves_like 'a Type'
 
-  context '#load' do
-    it 'converts to cheese cake for nil' do
-      expect(subject.load(nil)).to eq default_value
+  %w{value callable}.each do |type|
+    subject { described_class.new(Porro::Types::Any, send("default_#{type}")) }
+
+    context "#load with default #{type}" do
+      it 'converts to default value for nil' do
+        expect(subject.load(nil)).to eq default_value
+      end
+
+      it 'does not touch a specific value' do
+        expect(subject.load(specific_value)).to eq specific_value
+      end
     end
 
-    it 'does not touch 0' do
-      expect(subject.load(0)).to eq 0
-    end
-  end
+    context "#dump with default #{type}" do
+      it 'dumps the default' do
+        expect(subject.dump(nil)).to eq default_value
+      end
 
-  context '#dump' do
+      it 'dumps the specific value' do
+        expect(subject.dump(specific_value)).to eq specific_value
+      end
+    end
   end
 end
