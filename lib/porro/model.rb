@@ -39,6 +39,7 @@ module Porro
     end
 
     def initialize(params = {})
+      raise ArgumentError, 'params failed to respond to to_h' unless params.respond_to?(:to_h)
       self.attributes = attributes.merge(params.to_h)
       super()
     end
