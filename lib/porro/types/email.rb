@@ -20,10 +20,6 @@ module Porro
         self
       end
 
-      def self.default(value)
-        self
-      end
-
       def self.load(value)
         value = value.to_s.strip.downcase
         return value if value =~ EMAIL_REGEX

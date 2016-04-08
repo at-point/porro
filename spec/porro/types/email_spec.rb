@@ -5,7 +5,7 @@ require 'porro/types/email'
 
 RSpec.describe Porro::Types::Email do
   subject { described_class }
-  it_behaves_like 'a Type'
+  it_behaves_like 'a Type', supports: %w{strip blankify}
 
   it 'is exposed as Porro.string.email' do
     expect(Porro.string.email).to be subject

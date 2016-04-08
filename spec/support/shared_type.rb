@@ -27,7 +27,6 @@ RSpec.shared_examples 'a Type' do |supports: %w{blankify strip default}, data: '
         end
 
         it "returns a typeish too" do
-          # "Default" needs at least one argument
           args = method == 'default' ? %w{default} : []
           type = subject.public_send(method, *args)
 
