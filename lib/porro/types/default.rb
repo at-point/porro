@@ -13,11 +13,11 @@ module Porro
       end
 
       def load(value)
-        @wrapper.load(value) || default_proc.call
+        @wrapper.load(value) || @wrapper.load(default_proc.call)
       end
 
       def dump(attribute)
-        @wrapper.dump(attribute) || default_proc.call
+        @wrapper.dump(attribute) || @wrapper.dump(default_proc.call)
       end
     end
   end
