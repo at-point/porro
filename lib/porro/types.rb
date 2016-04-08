@@ -19,7 +19,7 @@ module Porro
   module Types
     TYPES = {
       bool: Porro::Types::Bool,
-      date: Porro::Types::Date.new,
+      date: Porro::Types::Date,
       integer: Porro::Types::Numeric,
       string: Porro::Types::String,
       any: Porro::Types::Any,
