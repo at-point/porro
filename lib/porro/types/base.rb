@@ -8,6 +8,10 @@ module Porro
       def strip
         Strip.new(self)
       end
+
+      def default(value)
+        Default.new(self, value)
+      end
     end
   end
 end

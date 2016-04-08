@@ -7,7 +7,7 @@ class MultiplyType < Struct.new(:factor)
   end
 
   def dump(attribute)
-    attribute / factor
+    attribute.to_i / factor
   end
 end
 

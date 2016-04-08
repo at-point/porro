@@ -1,6 +1,4 @@
-RSpec.shared_examples 'a Type' do |supports: %w{blankify strip}|
-  let(:data) { 'data' }
-
+RSpec.shared_examples 'a Type' do |supports: %w{blankify strip default}, data: 'data'|
   context '#load' do
     it 'responds #load' do
       expect(subject).to respond_to(:load)
@@ -29,13 +27,15 @@ RSpec.shared_examples 'a Type' do |supports: %w{blankify strip}|
         end
 
         it "returns a typeish too" do
-          type = subject.public_send(method)
+          args = method == 'default' ? %w{default} : []
+          type = subject.public_send(method, *args)
+
           expect(type).to respond_to(:load)
           expect(type).to respond_to(:dump)
         end
       end
     end
   else
-    it 'does not support Base DSL (e.g. blankify, strip)'
+    it 'does not support Base DSL (e.g. blankify, strip, default)'
   end
 end

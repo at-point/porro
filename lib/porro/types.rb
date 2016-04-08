@@ -13,12 +13,13 @@ require 'porro/types/email'
 
 require 'porro/types/blankify'
 require 'porro/types/strip'
+require 'porro/types/default'
 
 module Porro
   module Types
     TYPES = {
       bool: Porro::Types::Bool,
-      date: Porro::Types::Date.new,
+      date: Porro::Types::Date,
       integer: Porro::Types::Numeric,
       string: Porro::Types::String,
       any: Porro::Types::Any,
