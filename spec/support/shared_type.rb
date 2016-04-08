@@ -1,6 +1,4 @@
-RSpec.shared_examples 'a Type' do |supports: %w{blankify strip}|
-  let(:data) { 'data' }
-
+RSpec.shared_examples 'a Type' do |supports: %w{blankify strip}, data: 'data'|
   context '#load' do
     it 'responds #load' do
       expect(subject).to respond_to(:load)

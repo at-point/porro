@@ -11,7 +11,7 @@ RSpec.describe Porro::Types::Object do
 
   context 'compliance' do
     before { allow(subject).to receive(:warn).with(/unable to dump object of type Address/) }
-    it_behaves_like 'a Type'
+    it_behaves_like 'a Type', data: { }
   end
 
   context '#initialize' do
