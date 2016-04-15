@@ -31,6 +31,14 @@ module Porro
         warn "#{self.class} unable to dump object of type #{klass}: must implement #attributes, #to_hash or #to_h"
         {}
       end
+
+      def to_ast
+        if klass.respond_to?(:to_ast)
+          [:object, klass.to_ast]
+        else
+          [:object, [:type, klass.name]]
+        end
+      end
     end
   end
 end

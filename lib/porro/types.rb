@@ -14,6 +14,8 @@ require 'porro/types/email'
 require 'porro/types/blankify'
 require 'porro/types/strip'
 
+require 'porro/types/struct'
+
 module Porro
   module Types
     TYPES = {
@@ -22,7 +24,8 @@ module Porro
       integer: Porro::Types::Numeric,
       string: Porro::Types::String,
       any: Porro::Types::Any,
-      none: Porro::Types::None
+      none: Porro::Types::None,
+      struct: Porro::Types::Struct
     }
 
     def self.factory(type, class_name: nil, blankify: false, strip: false)
@@ -42,7 +45,7 @@ module Porro
     def self.collection_factory(type, class_name)
       if [:array, :set].include?(type) && class_name
         inner_type = object_factory(class_name) || types_factory(class_name)
-        Porro::Types::Collection.new(inner_type, type == :set ? ::Set : ::Array)
+        Porro::Types::Collection.new(inner_type, type)
       end
     end
 

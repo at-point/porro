@@ -23,6 +23,14 @@ module Porro
       def dump(value)
         @wrapped.dump self.class.strip(value)
       end
+
+      def to_ast
+        if wrapped.respond_to?(:to_ast)
+          [:strip, wrapped.to_ast]
+        else
+          [:strip, [:type, wrapped.name]]
+        end
+      end
     end
   end
 end

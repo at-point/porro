@@ -17,6 +17,10 @@ module Porro
       def self.dump(attribute)
         load(attribute)
       end
+
+      def self.to_ast
+        [:type, 'integer']
+      end
     end
   end
 end

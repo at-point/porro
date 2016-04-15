@@ -24,6 +24,10 @@ module Porro
       def self.dump(attribute)
         !!attribute
       end
+
+      def self.to_ast
+        [:type, 'bool']
+      end
     end
   end
 end

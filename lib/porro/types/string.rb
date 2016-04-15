@@ -16,6 +16,10 @@ module Porro
       def self.dump(value)
         value.to_s
       end
+
+      def self.to_ast
+        [:type, 'string']
+      end
     end
   end
 end

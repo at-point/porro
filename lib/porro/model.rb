@@ -19,6 +19,10 @@ module Porro
         base.instance_variable_set(:'@porro_attributes', inherited_attrs)
       end
 
+      def to_ast
+        Porro::Types::Struct.new(porro_attributes).to_ast
+      end
+
       private
 
       def porro_module

@@ -29,6 +29,10 @@ module Porro
       def self.dump(value)
         load(value)
       end
+
+      def self.to_ast
+        [:type, 'email']
+      end
     end
   end
 end

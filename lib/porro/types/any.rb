@@ -26,6 +26,14 @@ module Porro
       def dump(value)
         type.dump(value)
       end
+
+      def to_ast
+        if type.respond_to?(:to_ast)
+          [:wrapped, type.to_ast]
+        else
+          [:wrapped, [:type, type.name]]
+        end
+      end
     end
 
     # Represents *any* kind of value, even those that do not safely
@@ -39,6 +47,10 @@ module Porro
 
       def self.dump(attribute)
         attribute
+      end
+
+      def self.to_ast
+        [:type, 'any']
       end
     end
   end

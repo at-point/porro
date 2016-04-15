@@ -27,6 +27,10 @@ module Porro
         return nil unless attribute.respond_to?(:to_date)
         attribute.to_date.strftime(DATE_FORMAT)
       end
+
+      def to_ast
+        [:type, 'date']
+      end
     end
   end
 end

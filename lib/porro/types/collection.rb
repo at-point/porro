@@ -1,16 +1,17 @@
+require 'set'
 require 'porro/types/object'
 
 module Porro
-  def self.collection(type, collection = Array)
+  def self.collection(type, collection = :array)
     Types::Collection.new Types.factory(type), collection
   end
 
   def self.array(type)
-    collection(type, Array)
+    collection(type, :array)
   end
 
   def self.set(type)
-    collection(type, Set)
+    collection(type, :set)
   end
 
   module Types
@@ -26,12 +27,11 @@ module Porro
       }
 
       def self.wrap_collection(klass)
-        return klass if klass.respond_to?(:new)
         return COLLECTIONS[klass] if COLLECTIONS.key?(klass)
         fail ArgumentError, 'invalid collection class, only :array, :set allowed'
       end
 
-      def initialize(type, collection_klass = Array)
+      def initialize(type, collection_klass = :array)
         Types.typeish!(type)
 
         @type = type
@@ -47,6 +47,14 @@ module Porro
       def dump(ary)
         return [] unless ary.respond_to?(:to_a)
         ary.to_a.map { |object| type.dump(object) }
+      end
+
+      def to_ast
+        if type.respond_to?(:to_ast)
+          [:collection, type.to_ast]
+        else
+          [:collection, [:type, type.name]]
+        end
       end
     end
   end

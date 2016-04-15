@@ -25,6 +25,14 @@ module Porro
         return nil if self.class.blank?(attribute) # FIXME: how to handle e.g. empty Array?
         @wrapped.dump(attribute)
       end
+
+      def to_ast
+        if wrapped.respond_to?(:to_ast)
+          [:blankify, wrapped.to_ast]
+        else
+          [:blankify, [:type, wrapped.name]]
+        end
+      end
     end
   end
 end
